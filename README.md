@@ -1,40 +1,40 @@
-# WZQ · Five in a Row
+# WZQ · 五子棋
 
-A small, dark LAN board game for two players. Run one local server, then join from any browser on the same network. No account, database, build step, or runtime packages needed.
+一个适合两人在局域网一起玩的简约深色五子棋。只需一台电脑启动服务，另一位玩家用同一局域网内的浏览器加入。无需账号、数据库、构建步骤或第三方运行依赖。
 
-## Quick start
+## 启动与加入
 
-1. Install [Node.js 18 or newer](https://nodejs.org/) on the host computer.
-2. Download this repository, then run `npm start` in its folder. On Windows, double-click `Start WZQ.cmd` instead.
-3. Open `http://localhost:3000`, enter a name, and create a room.
-4. Share the printed LAN address and six-digit code. The other player opens that LAN address on the same Wi-Fi and joins with the code.
-5. Black moves first. Place a stone at an empty intersection. The first player to connect five or more stones in a row wins.
+1. 在主机电脑安装 [Node.js 18 或更高版本](https://nodejs.org/)。
+2. 下载本仓库，在项目目录运行 `npm start`。Windows 用户也可以双击 `Start WZQ.cmd`。
+3. 主机打开 `http://localhost:3000`，输入昵称并创建房间。
+4. 将服务启动后显示的局域网地址和六位房间号发给另一位玩家。
+5. 对方连接同一个 Wi-Fi，打开该局域网地址，在页面选择加入并输入房间号。
 
-Only the host needs Node.js. For Windows Firewall prompts, allow access on private networks. Keep the host computer and server window running during the match.
+只有主机需要安装 Node.js。若 Windows 防火墙询问，请允许应用在专用网络通信。游戏期间请保持主机和服务窗口运行。
 
-## Rules
+## 玩法
 
-- 15 × 15 board, standard free-style Gomoku. Black goes first; turns alternate.
-- Five or more consecutive stones horizontally, vertically, or diagonally wins. Overlines count as wins.
-- Undo requests require the other player to accept. New games require both players to agree.
-- Refresh to reconnect to a reserved seat for two minutes. A new player cannot take a reserved seat.
-- Moves, undo votes, and new-game votes are checked by the server.
+- 棋盘为 15 × 15，黑棋先行，双方轮流落子。
+- 任一方向先连成五子或更多即获胜，长连也算赢。
+- 悔棋需要对方同意；重新开局需要双方都投票同意。
+- 刷新页面后，两分钟内可以回到原座位。
+- 服务端负责校验落子、悔棋和重新开局请求。
 
-No Renju forbidden-move rules, time limit, or ranking. This is a casual game for a trusted LAN. Do not expose the server port to the public internet. Rooms are held in memory and reset when the server stops.
+本游戏采用自由规则，不包含禁手、计时或排行榜。房间数据只保存在内存中，服务停止后会清空。建议仅在可信任的局域网内游玩，不要将端口暴露到公网。
 
-## Network troubleshooting
+## 网络问题排查
 
-- Both devices must use the same local network. Use the `LAN` address printed by the server, not `localhost` on the joining device.
-- Allow TCP port 3000 through the host firewall on private networks.
-- Guest Wi-Fi and router AP isolation can prevent devices from reaching each other.
-- Change the port: PowerShell `$env:PORT=3001; node server.mjs`.
+- 两台设备需连接同一个局域网。加入者应访问服务输出的 `LAN` 地址，不要使用 `localhost`。
+- 确认主机防火墙允许 TCP 3000 端口通过专用网络。
+- 访客 Wi-Fi 或路由器的 AP 隔离功能可能会阻止设备互相连接。
+- 如需更换端口，在 PowerShell 中运行：`$env:PORT=3001; node server.mjs`。
 
-## Structure
+## 项目结构
 
 ```text
-server.mjs        HTTP, rooms, moves, undo and rematch votes
-public/index.html Page structure
-public/style.css  Responsive dark theme
-public/app.js     Board rendering and interaction
-Start WZQ.cmd     Windows launcher
+server.mjs        HTTP 服务、房间与游戏规则
+public/index.html 页面结构
+public/style.css  响应式深色界面
+public/app.js     棋盘渲染与交互
+Start WZQ.cmd     Windows 启动脚本
 ```
